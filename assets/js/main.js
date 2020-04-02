@@ -47,6 +47,7 @@ let dom = {
         tintro: document.querySelector('p#Ttintro'),
         principal: document.querySelector('p#Tprincipal'),
         secundario: document.querySelector('p#Tsecundario'),
+        secundario2: document.querySelector('p#Tsecundario2'),
         icones: document.querySelector('div#Ticones'),
         musica: document.querySelector('select#Tmusica'),
         hora: "",
@@ -169,6 +170,7 @@ let dom = {
             for (let i in nome) {
                 if (nome[i]=='tintro') acao==0?this.timer.tintro.innerHTML = '':acao==1?this.timer.tintro.style.display = 'none':this.timer.tintro.style.display = 'block'
                 if (nome[i]=='secundario') acao==0?this.timer.secundario.innerHTML = '':acao==1?this.timer.secundario.style.display = 'none':this.timer.secundario.style.display = 'block'
+                if (nome[i]=='secundario2') acao==0?this.timer.secundario2.innerHTML = '':acao==1?this.timer.secundario2.style.display = 'none':this.timer.secundario2.style.display = 'block'
                 if (nome[i]=='icones') acao==0?this.timer.icones.innerHTML = '':acao==1?this.timer.icones.style.display = 'none':this.timer.icones.style.display = 'block'
                 if (nome[i]=='titulo') acao==0?this.timer.titulo.innerHTML = '':acao==1?this.timer.titulo.style.display = 'none':this.timer.titulo.style.display = 'block'
                 if (nome[i]=='menu') acao==0?this.timer.menu.innerHTML = '':acao==1?this.timer.menu.style.display = 'none':this.timer.menu.style.display = 'block'
@@ -551,6 +553,7 @@ function playTimer(){
                 contador.timer.real+=dom.timer.segundo.value+(valor.timer.segundo==1?" Segundo":" Segundos")
             }
             dom.limparEsconderOuMostrarTela(dom.timer.nome, 0, ['principal', 'icones'])
+            dom.limparEsconderOuMostrarTela(dom.timer.nome, 1, ['secundario'])
             dom.timer.principal.innerHTML = `
                 <table class="relogio">
                     <tr>
@@ -565,7 +568,8 @@ function playTimer(){
             funcao.timer = window.setInterval(function() {
                 dom.timer.principal.innerHTML = data.tiraUmSegundo()
             }, 1000);
-            dom.timer.secundario.innerHTML = contador.timer.real
+            dom.timer.secundario2.innerHTML = contador.timer.real
+            dom.limparEsconderOuMostrarTela(dom.timer.nome, 2, ['secundario2'])
             dom.adicionarIcone('Timer', 'stop', 'pause')
         }
     }
@@ -574,4 +578,19 @@ function pauseTimer() {
     dom.limparEsconderOuMostrarTela(dom.timer.nome, 0, ['icones', 'funcao'])
     dom.timer.principal.style.color = 'red'
     dom.adicionarIcone('Timer', 'stop', 'play')
+}
+function stopTimer(){
+    dom.limparEsconderOuMostrarTela(dom.timer.nome, 0, ['funcao', 'principal', 'icones'])
+    dom.limparEsconderOuMostrarTela(dom.timer.nome, 1, ['secundario2'])
+    dom.limparEsconderOuMostrarTela(dom.timer.nome, 2, ['secundario'])
+    dom.timer.principal.innerHTML = `
+        <input class="relogio" id="hora" type="number" placeholder="Hor" min="0" max="23">
+        <span>:</span>
+        <input class="relogio" id="minuto" type="number" placeholder="Min" min="0" max="59">
+        <span>:</span>
+        <input class="relogio" id="segundo" type="number" placeholder="Seg" min="0" max="59">
+    `
+    contador.timer.preciso = 0
+    contador.timer.real = 0
+    dom.adicionarIcone(dom.timer.nome, 'play')
 }
