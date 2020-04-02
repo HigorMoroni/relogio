@@ -237,6 +237,39 @@ let dom = {
             </table>
         `
         }
+    },
+    tiraUmSegundo(){
+        contador.timer.preciso-=1000
+        if(contador.timer.preciso<1000){
+            dom.limparEsconderOuMostrarTela(dom.timer.nome, 0, ['funcao', 'icones'])
+            sons.escolherOSom(dom.timer.musica.value)
+            dom.modal.texto.innerHTML = `<strong>Timer Finalizado!</strong><br/>${contador.timer.real}`
+            dom.modal.div.style.display = "block";
+            dom.adicionarIcone(dom.timer.nome, 'stop')
+            return `
+                <table class="relogio">
+                    <tr>
+                        <td class="dig">00</td>
+                        <td>:</td>
+                        <td class="dig">00</td>
+                        <td>:</td>
+                        <td class="dig">00</td>
+                    </tr>
+                </table>
+            `
+        }
+        this.timer.setSeconds(this.timer.getSeconds()-1)
+        return `
+            <table class="relogio">
+                <tr>
+                    <td class="dig">${("0" + this.timer.getHours()).slice(-2)}</td>
+                    <td>:</td>
+                    <td class="dig">${("0" + this.timer.getMinutes()).slice(-2)}</td>
+                    <td>:</td>
+                    <td class="dig">${("0" + this.timer.getSeconds()).slice(-2)}</td>
+                </tr>
+            </table>
+        `
     }
 }, funcao = {
     relogio: '',
@@ -329,7 +362,6 @@ window.onload = (event) => {
             if (alarmes[i][0].getHours()==data.alarme.getHours()&&alarmes[i][0].getMinutes()==data.alarme.getMinutes()&&alarmes[i][3]==true) {
                 alarmes[i][4]=true
                 sons.escolherOSom(alarmes[i][5])
-                contador.sons.tocando = alarmes[i][5]
                 dom.modal.texto.innerHTML = `<strong>Alarme!</strong><br/>${("0" + alarmes[i][0].getHours()).slice(-2)}:${("0" + alarmes[i][0].getMinutes()).slice(-2)}`
                 dom.modal.div.style.display = "block";
             }
@@ -478,4 +510,54 @@ function stopCronometro(){
     dom.limparEsconderOuMostrarTela(dom.cronometro.nome, 0, ['principal', 'secundario', 'funcao'])
     contador.cronometro.volta = 0
     data.cronometro.principal = ''
+}
+
+function playTimer(){
+    dom.timer.hora = document.querySelector('input#hora')
+    dom.timer.minuto = document.querySelector('input#minuto')
+    dom.timer.segundo = document.querySelector('input#segundo')
+    dom.timer.musica = document.querySelector('select#Tmusica')
+    valor.timer.hora = Number(dom.timer.hora.value)
+    valor.timer.minuto = Number(dom.timer.minuto.value)
+    valor.timer.segundo = Number(dom.timer.segundo.value)
+    if((valor.timer.hora==0&&valor.timer.minuto==0&&valor.timer.segundo==0)||(valor.timer.hora<0||valor.timer.minuto<0||valor.timer.segundo<0)){
+        alert(`Valores Incorretos Digitados!\nDigite um tempo válido!`)
+    } else if(valor.timer.hora>=24 || valor.timer.minuto>= 60 || valor.timer.segundo>= 60){
+        alert(`Valores Incorretos Digitados!\nValores Máximos:\nHora: 23\nMinuto: 59\nSegundo: 59`)
+    } else {
+        dom.limparEsconderOuMostrarTela(dom.timer.nome, 0, ['principal', 'icones'])
+        let temHora = false
+        let temMinuto = false
+        contador.timer.preciso = valor.timer.hora*3600000+valor.timer.minuto*60000+valor.timer.segundo*1000
+        data.timer.setHours(valor.timer.hora, valor.timer.minuto, valor.timer.segundo)
+        if(data.timer.getHours()!=0){
+            contador.timer.real=dom.timer.hora.value+(valor.timer.hora==1?" Hora":" Horas")
+            temHora = true
+        }
+        if(data.timer.getMinutes()!=0){
+            if (temHora){contador.timer.real+=', '}
+            contador.timer.real+=dom.timer.minuto.value+(valor.timer.minuto==1?" Minuto":" Minutos")
+            temMinuto = true
+        }
+        if(data.timer.getSeconds()!=0){
+            if (temMinuto||temHora){contador.timer.real+=' e '}
+            contador.timer.real+=dom.timer.segundo.value+(valor.timer.segundo==1?" Segundo":" Segundos")
+        }
+        dom.timer.principal.innerHTML = `
+            <table class="relogio">
+                <tr>
+                    <td class="dig">${("0" + data.timer.getHours()).slice(-2)}</td>
+                    <td>:</td>
+                    <td class="dig">${("0" + data.timer.getMinutes()).slice(-2)}</td>
+                    <td>:</td>
+                    <td class="dig">${("0" + data.timer.getSeconds()).slice(-2)}</td>
+                </tr>
+            </table>
+        `
+        funcao.timer = window.setInterval(function() {
+            dom.timer.principal.innerHTML = data.tiraUmSegundo()
+        }, 1000);
+        dom.timer.secundario.innerHTML = contador.timer.real
+        dom.adicionarIcone('Timer', 'stop', 'pause')
+    }
 }
