@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Relógio</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body>
+
+    <section class="container">
+        <div id="menu">
+            <button id="alarme" onclick="dom.trocarTela(dom.alarme.nome)">Alarme</button>
+            <button id="relogio" onclick="dom.trocarTela(dom.relogio.nome)">Relógio</button>
+            <button id="cronometro" onclick="dom.trocarTela(dom.cronometro.nome)">Cronômetro</button>
+            <button id="timer" onclick="dom.trocarTela(dom.timer.nome)">Timer</button>
+        </div>
+        <div class="funcoes" id="inicial">
+            <div><h1 class="titulo" id="titulo">Relógio Multitarefas</h1></div>
+            <div class="resultado" id="resultado">
+                <p class="intro" id="tintro">Selecione uma opção para iniciar!</p>
+                <p class="principal" id="principal"></p>
+                <p class="secundario" id="secundario"></p>
+            </div>
+            <div class="icones" id="icones"></div>            
+        </div>
+        <div class="funcoes" id="alarme">
+            <div><h1 class="titulo" id="Atitulo">Alarme</h1></div>
+            <div class="resultado" id="Aresultado">
+                <p class="intro" id="Atintro"></p>
+                <p class="principal" id="Aprincipal"></p>
+                <p class="secundario" id="Asecundario">
+                    <label for="Amusica">Escolha um toque: </label>
+                    <select name="Amusica" class="musica" id="Amusica"></select>
+                </p>
+            </div>
+            <div class="icones" id="Aicones">
+                <img class="icone" src="./assets/img/icon/add.svg" onclick="addAlarme()">
+            </div>
+        </div>
+        <div class="funcoes" id="relogio">
+            <div><h1 class="titulo" id="Rtitulo">Relógio</h1></div>
+            <div class="resultado" id="Rresultado">
+                <p class="intro" id="Rtintro"></p>
+                <p class="principal" id="Rprincipal"></p>
+                <p class="secundario" id="Rsecundario"></p>
+            </div>
+            <div class="icones" id="Ricones">
+                <img class="icone" src="./assets/img/icon/add.svg" onclick="addRelogio()">
+            </div>
+        </div>
+        <div class="funcoes" id="cronometro">
+            <div><h1 class="titulo" id="Ctitulo">Cronometro</h1></div>
+            <div class="resultado" id="Cresultado">
+                <p class="intro" id="Ctintro">
+
+                </p>
+                <div class="principal" id="Cprincipal">
+                    <table class="relogio">
+                        <tr>
+                            <td class="dig">00</td>
+                            <td>:</td>
+                            <td class="dig">00</td>
+                            <td>:</td>
+                            <td class="dig">00</td>
+                        </tr>
+                    </table>
+                </div>
+                <p class="secundario" id="Csecundario">
+
+                </p>
+            </div>
+            <div class="icones" id="Cicones">
+                <img class="icone" src="./assets/img/icon/play.svg" onclick="playCronometro()">
+            </div>
+        </div>
+        <div class="funcoes" id="timer">
+            <div><h1 class="titulo" id="Ttitulo">Timer</h1></div>
+            <div class="resultado" id="Tresultado">
+                <p class="intro" id="Ttintro"></p>
+                <p class="principal" id="Tprincipal">
+                    <input class="relogio" id="hora" type="number" placeholder="Hor" min="0" max="23">
+                    <span>:</span>
+                    <input class="relogio" id="minuto" type="number" placeholder="Min" min="0" max="59">
+                    <span>:</span>
+                    <input class="relogio" id="segundo" type="number" placeholder="Seg" min="0" max="59">
+                </p>
+                <p class="secundario" id="Tsecundario">
+                    <label for="Tmusica">Escolha um toque: </label>
+                    <select name="Tmusica" class="musica" id="Tmusica"></select>
+                </p>
+            </div>
+            <div class="icones" id="Ticones">
+                <img class="icone" src="./assets/img/icon/play.svg" onclick="playTimer()">
+            </div>
+        </div>
+    </section>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="modal">Texto do modão</p>
+    </div>
+
+    <script src="./assets/js/main.js"></script>
+</body>
+
+</html>
