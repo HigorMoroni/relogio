@@ -362,6 +362,7 @@ function stopCronometro(){
     dom.menu.style.display = 'block'
     contadorLapCronometro = 0
     funCronometro()
+    //precisa zerar o cronometro:     data.cronometro.principal == ''
 }
 
 function funRelogio(){

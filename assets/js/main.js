@@ -75,7 +75,7 @@ let dom = {
         //Argumentos: (Tipo, nome, nome, nome, nome, nome...)
         for (let i=1;i<arguments.length;i++) {
             let icone = document.createElement('img')
-            icone.setAttribute('src', `./assets/img/icon/${arguments[i]=='rePlay'?'play':arguments[i]}.svg`)
+            icone.setAttribute('src', `./assets/img/icon/${arguments[i]}.svg`)
             icone.setAttribute('onclick', `${arguments[i]+arguments[0]}()`)
             icone.setAttribute('class', `icone`)
             if (arguments[0]=='Alarme') this.alarme.icones.appendChild(icone)
@@ -178,7 +178,7 @@ let dom = {
     alarme: new Date,
     relogio: new Date,
     cronometro: {
-        principal: new Date,
+        principal: '',
         volta: new Date,
         ultimaVolta: new Date,
     },
@@ -408,8 +408,13 @@ function okAlarme() {
 }
 
 function playCronometro(){
-    dom.limparEsconderOuMostrarTela(dom.cronometro.nome, 0, ['icones', 'principal'])
-    data.cronometro.principal.setHours(0,0,0,0)
+    dom.limparEsconderOuMostrarTela(dom.cronometro.nome, 0, ['icones'])
+    if (data.cronometro.principal == '') {
+        data.cronometro.principal = new Date
+        data.cronometro.principal.setHours(0,0,0,0)
+    } else {
+        dom.cronometro.principal.style.color = 'black'
+    }
     funcao.cronometro = window.setInterval(function() {
        dom.cronometro.principal.innerHTML = data.botaUmCentesimo()
     }, 10);
@@ -455,6 +460,5 @@ function pauseCronometro(){
     clearInterval(funcao.cronometro);
     dom.limparEsconderOuMostrarTela(dom.cronometro.nome, 0, ['icones'])
     dom.cronometro.principal.style.color = 'red'
-    dom.adicionarIcone(dom.cronometro.nome, 'stop', 'rePlay')
+    dom.adicionarIcone(dom.cronometro.nome, 'stop', 'play')
 }
-
