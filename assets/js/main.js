@@ -410,9 +410,51 @@ function okAlarme() {
 function playCronometro(){
     dom.limparEsconderOuMostrarTela(dom.cronometro.nome, 0, ['icones', 'principal'])
     data.cronometro.principal.setHours(0,0,0,0)
-    funcao.timer = window.setInterval(function() {
+    funcao.cronometro = window.setInterval(function() {
        dom.cronometro.principal.innerHTML = data.botaUmCentesimo()
     }, 10);
     dom.adicionarIcone(dom.cronometro.nome, 'lap', 'pause')
+}
+function lapCronometro(){
+    contador.cronometro.volta++
+    if (contador.cronometro.volta==1){
+        data.cronometro.volta.setMilliseconds(data.cronometro.principal.getMilliseconds())
+        data.cronometro.volta.setSeconds(data.cronometro.principal.getSeconds())
+        data.cronometro.volta.setMinutes(data.cronometro.principal.getMinutes())
+        data.cronometro.ultimaVolta.setMilliseconds(data.cronometro.principal.getMilliseconds())
+        data.cronometro.ultimaVolta.setSeconds(data.cronometro.principal.getSeconds())
+        data.cronometro.ultimaVolta.setMinutes(data.cronometro.principal.getMinutes())
+        dom.cronometro.secundario.innerHTML = `
+        <p>
+            ${("0" + contador.cronometro.volta).slice(-2)}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            +${("0" + data.cronometro.volta.getMinutes()).slice(-2)}:${("0" + data.cronometro.volta.getSeconds()).slice(-2)}.${("0" + data.cronometro.volta.getMilliseconds()).slice(-3).substring(0,2)}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            ${("0" + data.cronometro.principal.getMinutes()).slice(-2)}:${("0" + data.cronometro.principal.getSeconds()).slice(-2)}.${("0" + data.cronometro.principal.getMilliseconds()).slice(-3).substring(0,2)}
+        </p>
+    `
+    } else {
+        let dataRealUltimaVolta = (Number(data.cronometro.ultimaVolta.getMinutes())*60000)+(Number(data.cronometro.ultimaVolta.getSeconds())*1000)+(Number(data.cronometro.ultimaVolta.getMilliseconds()))
+        let dataRealCronometro = (Number(data.cronometro.principal.getMinutes())*60000)+(Number(data.cronometro.principal.getSeconds())*1000)+(Number(data.cronometro.principal.getMilliseconds()))
+        data.cronometro.volta.setHours(0,0,0,0)
+        data.cronometro.volta.setMilliseconds(dataRealCronometro-dataRealUltimaVolta)
+        data.cronometro.ultimaVolta.setHours(0,0,0,0)
+        data.cronometro.ultimaVolta.setMilliseconds(dataRealCronometro)
+        dom.cronometro.secundario.innerHTML = `
+        <p>
+            ${("0" + contador.cronometro.volta).slice(-2)}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            +${("0" + data.cronometro.volta.getMinutes()).slice(-2)}:${("0" + data.cronometro.volta.getSeconds()).slice(-2)}.${("0" + data.cronometro.volta.getMilliseconds()).slice(-3).substring(0,2)}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            ${("0" + data.cronometro.principal.getMinutes()).slice(-2)}:${("0" + data.cronometro.principal.getSeconds()).slice(-2)}.${("0" + data.cronometro.principal.getMilliseconds()).slice(-3).substring(0,2)}
+        </p>
+    ` + dom.cronometro.secundario.innerHTML
+    }
+}
+function pauseCronometro(){
+    clearInterval(funcao.cronometro);
+    dom.limparEsconderOuMostrarTela(dom.cronometro.nome, 0, ['icones'])
+    dom.cronometro.principal.style.color = 'red'
+    dom.adicionarIcone(dom.cronometro.nome, 'stop', 'rePlay')
 }
 
