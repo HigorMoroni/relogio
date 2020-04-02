@@ -142,9 +142,20 @@ let dom = {
                 if (nome[i]=='icones') acao==0?this.cronometro.icones.innerHTML = '':acao==1?this.cronometro.icones.style.display = 'none':this.cronometro.icones.style.display = 'block'
                 if (nome[i]=='titulo') acao==0?this.cronometro.titulo.innerHTML = '':acao==1?this.cronometro.titulo.style.display = 'none':this.cronometro.titulo.style.display = 'block'
                 if (nome[i]=='menu') acao==0?this.cronometro.menu.innerHTML = '':acao==1?this.cronometro.menu.style.display = 'none':this.cronometro.menu.style.display = 'block'
+                if (nome[i]=='funcao') if (acao==0) clearInterval(funcao.cronometro);
                 if (nome[i]=='principal') {
                     if (acao==0) {
-                        this.cronometro.principal.innerHTML = ''
+                        this.cronometro.principal.innerHTML = `
+                            <table class="relogio">
+                                <tr>
+                                    <td class="dig">00</td>
+                                    <td>:</td>
+                                    <td class="dig">00</td>
+                                    <td>:</td>
+                                    <td class="dig">00</td>
+                                </tr>
+                            </table>
+                        `
                         this.cronometro.principal.style.color = 'black'
                     } else if (acao==1) {
                         this.cronometro.principal.style.display = 'none'
@@ -161,6 +172,7 @@ let dom = {
                 if (nome[i]=='icones') acao==0?this.timer.icones.innerHTML = '':acao==1?this.timer.icones.style.display = 'none':this.timer.icones.style.display = 'block'
                 if (nome[i]=='titulo') acao==0?this.timer.titulo.innerHTML = '':acao==1?this.timer.titulo.style.display = 'none':this.timer.titulo.style.display = 'block'
                 if (nome[i]=='menu') acao==0?this.timer.menu.innerHTML = '':acao==1?this.timer.menu.style.display = 'none':this.timer.menu.style.display = 'block'
+                if (nome[i]=='funcao') if (acao==0) clearInterval(funcao.timer);
                 if (nome[i]=='principal') {
                     if (acao==0) {
                         this.timer.principal.innerHTML = ''
@@ -461,4 +473,9 @@ function pauseCronometro(){
     dom.limparEsconderOuMostrarTela(dom.cronometro.nome, 0, ['icones'])
     dom.cronometro.principal.style.color = 'red'
     dom.adicionarIcone(dom.cronometro.nome, 'stop', 'play')
+}
+function stopCronometro(){
+    dom.limparEsconderOuMostrarTela(dom.cronometro.nome, 0, ['principal', 'secundario', 'funcao'])
+    contador.cronometro.volta = 0
+    data.cronometro.principal = ''
 }
