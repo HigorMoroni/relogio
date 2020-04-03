@@ -591,6 +591,6 @@ function stopTimer(){
         <input class="relogio" id="segundo" type="number" placeholder="Seg" min="0" max="59">
     `
     contador.timer.preciso = 0
-    contador.timer.real = 0
+    contador.timer.real = ''
     dom.adicionarIcone(dom.timer.nome, 'play')
 }
