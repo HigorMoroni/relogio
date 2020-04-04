@@ -339,6 +339,9 @@ let dom = {
     },
     sons: {
         tocando: ''
+    },
+    alarme: {
+        json: ''
     }
 }
 const sons = {
@@ -393,6 +396,7 @@ window.onclick = function(event) {
 window.onload = function() {
     dom.timer.selectDasMusicas()
     dom.alarme.selectDasMusicas()
+    mostrarTodosAlarmes('inicial')
     funcao.alarme = window.setInterval(function() {
         data.alarme = new Date()
         for (let i in alarmes) {
@@ -417,16 +421,22 @@ window.onload = function() {
 };
 
 function mostrarTodosAlarmes(){
-    for (let i in alarmes) {
-        dom.alarme.principal.innerHTML += `
-            <table class="alarme"><tr>
-                <td></td>
-                <td>${("0" + alarmes[i][0].getHours()).slice(-2)}:${("0" + alarmes[i][0].getMinutes()).slice(-2)}</td>
-                <td></td>
-                <td><div class="slideCheck"><input type="checkbox" value="None" id="alarme${i}" name="alarmeOn" onclick="mudaStatusAlarme(${i})" ${alarmes[i][3]==true ?'checked':''}/><label class="ativar" for="alarme${i}"></label></div></td>
-                <td></td>
-            </tr></table>
-        `
+    if (arguments[0]=='inicial') {
+        const alarmesJSON = localStorage.getItem('alarmes')
+        alarmes = JSON.parse(alarmesJSON)
+        console.log(alarmes)
+    } else {
+        for (let i in alarmes) {
+            dom.alarme.principal.innerHTML += `
+                <table class="alarme"><tr>
+                    <td></td>
+                    <td>${("0" + alarmes[i][0].getHours()).slice(-2)}:${("0" + alarmes[i][0].getMinutes()).slice(-2)}</td>
+                    <td></td>
+                    <td><div class="slideCheck"><input type="checkbox" value="None" id="alarme${i}" name="alarmeOn" onclick="mudaStatusAlarme(${i})" ${alarmes[i][3]==true ?'checked':''}/><label class="ativar" for="alarme${i}"></label></div></td>
+                    <td></td>
+                </tr></table>
+            `
+        }
     }
 }
 function mudaStatusAlarme(interacao){
@@ -509,6 +519,8 @@ function okAlarme() {
             if (a[1]>b[1]) return 1;
             if (a[1]==b[1]) { if (a[2]<b[2]) return -1; if (a[2]>b[2]) return 1; }
         })
+        const alarmesJSON = JSON.stringify(alarmes)
+        localStorage.setItem('alarmes', alarmesJSON)
         dom.limparEsconderOuMostrarTela(dom.alarme.nome, 0, ['principal'])
         dom.limparEsconderOuMostrarTela(dom.alarme.nome, 1, ['secundario'])
         mostrarTodosAlarmes()
