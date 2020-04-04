@@ -94,7 +94,49 @@ let dom = {
         if(nome==this.alarme.nome) this.alarme.div.style.display = 'block'
         if(nome==this.relogio.nome) this.relogio.div.style.display = 'block'
         if(nome==this.cronometro.nome) this.cronometro.div.style.display = 'block'
-        if(nome==this.timer.nome) this.timer.div.style.display = 'block'
+        if(nome==this.timer.nome) {
+            this.timer.div.style.display = 'block'
+            dom.timer.hora = document.querySelector('input#hora')
+            dom.timer.minuto = document.querySelector('input#minuto')
+            dom.timer.segundo = document.querySelector('input#segundo')
+            dom.timer.hora.focus()
+            dom.timer.hora.addEventListener('input', function() {
+                dom.timer.hora = document.querySelector('input#hora')
+                valor.timer.hora = Number(dom.timer.hora.value)
+                if (dom.timer.hora.value.length>=2) {
+                    dom.timer.minuto.focus()
+                    if (valor.timer.hora>23) {
+                        dom.timer.hora.value = '23'
+                        valor.timer.hora = 23
+                    }
+                }
+            })
+            dom.timer.minuto.addEventListener('input', function() {
+                dom.timer.minuto = document.querySelector('input#minuto')
+                valor.timer.minuto = Number(dom.timer.minuto.value)
+                if (dom.timer.minuto.value.length>=2) {
+                    dom.timer.segundo.focus()
+                    if (valor.timer.minuto>59) {
+                        dom.timer.minuto.value = '59'
+                        valor.timer.minuto = 59
+                    }
+                }
+            })
+            dom.timer.segundo.addEventListener('input', function() {
+                alert('Recebeu')
+                dom.timer.segundo = document.querySelector('input#segundo')
+                valor.timer.segundo = Number(dom.timer.segundo.value)
+                if (dom.timer.segundo.value.length>=2) {
+                    alert('Recebeu 2')
+                    dom.timer.musica.focus()
+                    if (valor.timer.segundo>59) {
+                        alert('Recebeu Muito')
+                        dom.timer.segundo.value = '59'
+                        valor.timer.segundo = 59
+                    }
+                }
+            })
+        }
     },
     limparEsconderOuMostrarTela(tipo, acao, nome) {
         //Argumentos: Tipo: nome da funcao / Acão: 0-Limpar 1-Esconder 2-Mostrar / Nome: array com todos os obejetos dom a serem limpos/escondidos
@@ -348,7 +390,7 @@ window.onclick = function(event) {
         sons.pararOSom()
     }
 }
-window.onload = (event) => {
+window.onload = function() {
     dom.timer.selectDasMusicas()
     dom.alarme.selectDasMusicas()
     funcao.alarme = window.setInterval(function() {
@@ -399,6 +441,31 @@ function addAlarme() {
         <input class="relogio" name="minuto" id="minuto" type="number" placeholder="Min" min="0" max="59">
         `
     dom.adicionarIcone(dom.alarme.nome, 'cancel', 'ok')
+    dom.alarme.hora = document.querySelector('input#hora')
+    dom.alarme.minuto = document.querySelector('input#minuto')
+    dom.alarme.hora.focus()
+    dom.alarme.hora.addEventListener('input', function() {
+        dom.alarme.hora = document.querySelector('input#hora')
+        valor.alarme.hora = Number(dom.alarme.hora.value)
+        if (dom.alarme.hora.value.length>=2) {
+            dom.alarme.minuto.focus()
+            if (valor.alarme.hora>23) {
+                dom.alarme.hora.value = '23'
+                valor.alarme.hora = 23
+            }
+        }
+    })
+    dom.alarme.minuto.addEventListener('input', function() {
+        dom.alarme.minuto = document.querySelector('input#minuto')
+        valor.alarme.minuto = Number(dom.alarme.minuto.value)
+        if (dom.alarme.minuto.value.length>=2) {
+            dom.alarme.musica.focus()
+            if (valor.alarme.minuto>59) {
+                dom.alarme.minuto.value = '59'
+                valor.alarme.minuto = 59
+            }
+        }
+    })
 }
 function cancelAlarme() {
     dom.limparEsconderOuMostrarTela(dom.alarme.nome, 0, ['principal', 'icones'])
@@ -407,11 +474,7 @@ function cancelAlarme() {
     dom.adicionarIcone(dom.alarme.nome, 'add')
 }
 function okAlarme() {
-    dom.alarme.hora = document.querySelector('input#hora')
-    dom.alarme.minuto = document.querySelector('input#minuto')
     dom.alarme.musica = document.querySelector('select.musica')
-    valor.alarme.hora = Number(dom.alarme.hora.value)
-    valor.alarme.minuto = Number(dom.alarme.minuto.value)
     let jaTem = false
     let quale
     for (i in alarmes) {
