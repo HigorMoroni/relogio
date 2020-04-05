@@ -340,9 +340,6 @@ let dom = {
     sons: {
         tocando: ''
     },
-    alarme: {
-        json: 0
-    }
 }
 const sons = {
     quantidade: 4,
@@ -396,10 +393,16 @@ window.onclick = function(event) {
 window.onload = function() {
     dom.timer.selectDasMusicas()
     dom.alarme.selectDasMusicas()
-    const contadorJSON = localStorage.getItem('contador')
-    const contadorConvertido = JSON.parse(contadorJSON)
-    //contador.alarme.json = Number(contadorConvertido)
-    mostrarTodosAlarmes('inicial')
+    if (localStorage.hasOwnProperty('alarmes')) {
+        let arrayDoChrome = JSON.parse(localStorage.getItem('alarmes'))
+        for (let i in arrayDoChrome) {
+            arrayDoChrome[i][0] = new Date
+            arrayDoChrome[i][0].setHours(arrayDoChrome[i][1],arrayDoChrome[i][2],0,0)
+            alarmes.push(arrayDoChrome[i])
+        }
+    }
+    
+    mostrarTodosAlarmes()
     funcao.alarme = window.setInterval(function() {
         data.alarme = new Date()
         for (let i in alarmes) {
@@ -424,28 +427,25 @@ window.onload = function() {
 };
 
 function mostrarTodosAlarmes(){
-    if (arguments[0]=='inicial') {
-        for (let i=0;i<contador.alarme.json;i++) {
-            const alarmeJSON = localStorage.getItem(`alarme${i}`)
-            alarmes.push(JSON.parse(alarmeJSON))
-            contador.alarme.json++
-        }
-    } else {
-        for (let i in alarmes) {
-            dom.alarme.principal.innerHTML += `
-                <table class="alarme"><tr>
-                    <td></td>
-                    <td>${("0" + alarmes[i][0].getHours()).slice(-2)}:${("0" + alarmes[i][0].getMinutes()).slice(-2)}</td>
-                    <td></td>
-                    <td><div class="slideCheck"><input type="checkbox" value="None" id="alarme${i}" name="alarmeOn" onclick="mudaStatusAlarme(${i})" ${alarmes[i][3]==true ?'checked':''}/><label class="ativar" for="alarme${i}"></label></div></td>
-                    <td></td>
-                </tr></table>
-            `
-        }
+    for (let i in alarmes) {
+        dom.alarme.principal.innerHTML += `
+            <table class="alarme"><tr>
+                <td></td>
+                <td>${("0" + alarmes[i][0].getHours()).slice(-2)}:${("0" + alarmes[i][0].getMinutes()).slice(-2)}</td>
+                <td></td>
+                <td><div class="slideCheck"><input type="checkbox" value="None" id="alarme${i}" name="alarmeOn" onclick="mudaStatusAlarme(${i})" ${alarmes[i][3]==true ?'checked':''}/><label class="ativar" for="alarme${i}"></label></div></td>
+                <td></td>
+            </tr></table>
+        `
     }
+}
+function salvarAlarmesNoLocalStorage() {
+    const alarmeJSON = JSON.stringify(alarmes)
+    localStorage.setItem(`alarmes`, alarmeJSON)
 }
 function mudaStatusAlarme(interacao){
     alarmes[interacao][3] = alarmes[interacao][3]==true?false:true
+    salvarAlarmesNoLocalStorage()
 }
 function addAlarme() {
     dom.limparEsconderOuMostrarTela(dom.alarme.nome, 0, ['icones'])
@@ -519,17 +519,12 @@ function okAlarme() {
         segurando.setHours(valor.alarme.hora,valor.alarme.minuto,0,0)
         // Valores:     Date()          hora              minuto        check jaTocou          musica
         alarmes.push([segurando, valor.alarme.hora, valor.alarme.minuto, true, false, dom.alarme.musica.value])
-        contador.alarme.json++
-        localStorage.setItem('contador', contador.alarme.json)
         alarmes.sort(function(a, b) {
             if (a[1]<b[1]) return -1;
             if (a[1]>b[1]) return 1;
             if (a[1]==b[1]) { if (a[2]<b[2]) return -1; if (a[2]>b[2]) return 1; }
         })
-        for (let i=0;i<alarmes.length;i++) {
-            const alarmeJSON = JSON.stringify(alarmes[i])
-            localStorage.setItem(`alarme${i}`, alarmeJSON)
-        }
+        salvarAlarmesNoLocalStorage()
         dom.limparEsconderOuMostrarTela(dom.alarme.nome, 0, ['principal'])
         dom.limparEsconderOuMostrarTela(dom.alarme.nome, 1, ['secundario'])
         mostrarTodosAlarmes()
