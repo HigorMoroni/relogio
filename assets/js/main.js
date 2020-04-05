@@ -341,7 +341,7 @@ let dom = {
         tocando: ''
     },
     alarme: {
-        json: ''
+        json: 0
     }
 }
 const sons = {
@@ -396,6 +396,9 @@ window.onclick = function(event) {
 window.onload = function() {
     dom.timer.selectDasMusicas()
     dom.alarme.selectDasMusicas()
+    const contadorJSON = localStorage.getItem('contador')
+    const contadorConvertido = JSON.parse(contadorJSON)
+    //contador.alarme.json = Number(contadorConvertido)
     mostrarTodosAlarmes('inicial')
     funcao.alarme = window.setInterval(function() {
         data.alarme = new Date()
@@ -422,9 +425,11 @@ window.onload = function() {
 
 function mostrarTodosAlarmes(){
     if (arguments[0]=='inicial') {
-        const alarmesJSON = localStorage.getItem('alarmes')
-        alarmes = JSON.parse(alarmesJSON)
-        console.log(alarmes)
+        for (let i=0;i<contador.alarme.json;i++) {
+            const alarmeJSON = localStorage.getItem(`alarme${i}`)
+            alarmes.push(JSON.parse(alarmeJSON))
+            contador.alarme.json++
+        }
     } else {
         for (let i in alarmes) {
             dom.alarme.principal.innerHTML += `
@@ -514,13 +519,17 @@ function okAlarme() {
         segurando.setHours(valor.alarme.hora,valor.alarme.minuto,0,0)
         // Valores:     Date()          hora              minuto        check jaTocou          musica
         alarmes.push([segurando, valor.alarme.hora, valor.alarme.minuto, true, false, dom.alarme.musica.value])
+        contador.alarme.json++
+        localStorage.setItem('contador', contador.alarme.json)
         alarmes.sort(function(a, b) {
             if (a[1]<b[1]) return -1;
             if (a[1]>b[1]) return 1;
             if (a[1]==b[1]) { if (a[2]<b[2]) return -1; if (a[2]>b[2]) return 1; }
         })
-        const alarmesJSON = JSON.stringify(alarmes)
-        localStorage.setItem('alarmes', alarmesJSON)
+        for (let i=0;i<alarmes.length;i++) {
+            const alarmeJSON = JSON.stringify(alarmes[i])
+            localStorage.setItem(`alarme${i}`, alarmeJSON)
+        }
         dom.limparEsconderOuMostrarTela(dom.alarme.nome, 0, ['principal'])
         dom.limparEsconderOuMostrarTela(dom.alarme.nome, 1, ['secundario'])
         mostrarTodosAlarmes()
