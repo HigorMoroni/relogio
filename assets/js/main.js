@@ -11,6 +11,7 @@ let dom = {
         musica: document.querySelector('select#Amusica'),
         hora: "",
         minuto: "",
+        tables: "",
         selectDasMusicas() {
             let i = 0
             for (key in sons) {
@@ -434,7 +435,7 @@ function mostrarTodosAlarmes(){
                 <td>${("0" + alarmes[i][0].getHours()).slice(-2)}:${("0" + alarmes[i][0].getMinutes()).slice(-2)}</td>
                 <td></td>
                 <td><div class="slideCheck"><input type="checkbox" value="None" id="alarme${i}" name="alarmeOn" onclick="mudaStatusAlarme(${i})" ${alarmes[i][3]==true ?'checked':''}/><label class="ativar" for="alarme${i}"></label></div></td>
-                <td></td>
+                <td><img class="icone" src="./assets/img/icon/trash.svg" onclick="excluirAlarme(${i})"></td>
             </tr></table>
         `
     }
@@ -530,6 +531,15 @@ function okAlarme() {
         mostrarTodosAlarmes()
         dom.adicionarIcone(dom.alarme.nome, 'add')
     }
+}
+function excluirAlarme(numero) {
+    dom.alarme.tables = document.querySelectorAll('table.alarme')
+    dom.alarme.tables[numero].remove()
+    alarmes.splice(numero, 1);
+    alarmes.sort()
+    dom.limparEsconderOuMostrarTela(dom.alarme.nome, 0, ['principal'])
+    mostrarTodosAlarmes()
+    salvarAlarmesNoLocalStorage()
 }
 
 function playCronometro(){
