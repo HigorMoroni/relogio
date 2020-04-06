@@ -124,14 +124,11 @@ let dom = {
                 }
             })
             dom.timer.segundo.addEventListener('input', function() {
-                alert('Recebeu')
                 dom.timer.segundo = document.querySelector('input#segundo')
                 valor.timer.segundo = Number(dom.timer.segundo.value)
                 if (dom.timer.segundo.value.length>=2) {
-                    alert('Recebeu 2')
                     dom.timer.musica.focus()
                     if (valor.timer.segundo>59) {
-                        alert('Recebeu Muito')
                         dom.timer.segundo.value = '59'
                         valor.timer.segundo = 59
                     }
