@@ -345,6 +345,7 @@ let dom = {
 const sons = {
     quantidade: 4,
     Bella_Ciao: new Audio('./assets/audio/bellaCiao.mp3'),
+    Coffin_Dance: new Audio('./assets/audio/coffinDance.mp3'),
     Dance_Monkey: new Audio('./assets/audio/danceMonkey.mp3'),
     Dorime_Ameno: new Audio('./assets/audio/dorimeAmeno.mp3'),
     Old_Town_Road: new Audio('./assets/audio/oldTownRoad.mp3'),
@@ -352,6 +353,9 @@ const sons = {
         if (nome=='Bella_Ciao') {
             this.Bella_Ciao.play()
             contador.sons.tocando = 'Bella_Ciao'
+        } else if (nome=='Coffin_Dance') {
+            this.Coffin_Dance.play()
+            contador.sons.tocando = 'Coffin_Dance'
         } else if (nome=='Dance_Monkey') {
             this.Dance_Monkey.play()
             contador.sons.tocando = 'Dance_Monkey'
@@ -367,6 +371,9 @@ const sons = {
         if (contador.sons.tocando=='Bella_Ciao') {
             this.Bella_Ciao.pause()
             this.Bella_Ciao.currentTime = 0;
+        } else if (contador.sons.tocando=='Coffin_Dance') {
+            this.Coffin_Dance.pause()
+            this.Coffin_Dance.currentTime = 0;
         } else if (contador.sons.tocando=='Dance_Monkey') {
             this.Dance_Monkey.pause()
             this.Dance_Monkey.currentTime = 0;
