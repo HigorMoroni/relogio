@@ -343,7 +343,7 @@ let dom = {
     },
 }
 const sons = {
-    quantidade: 4,
+    quantidade: 5,
     Bella_Ciao: new Audio('./assets/audio/bellaCiao.mp3'),
     Coffin_Dance: new Audio('./assets/audio/coffinDance.mp3'),
     Dance_Monkey: new Audio('./assets/audio/danceMonkey.mp3'),
