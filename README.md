@@ -1,6 +1,4 @@
 # Relógio Multitarefas
- Desafio de estudo: Copiar com JavaScript puro as funcionalidades do Relogio padrão de celulares android utilizando o DOM.
+ Desafio de estudo: Criar com javascript puro as funcionalidades do Relógio padrão de celulares android utilizando a DOM.
  
- Projeto já iniciado, foi pulicado e estou continuando de onde parei!
- 
- Live Teste: https://higormoroni.github.io/Relogio-Multitarefas/
+ Teste Aqui: https://higor.dev/relogio
